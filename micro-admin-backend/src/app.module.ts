@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,9 +8,8 @@ import { JogadorSchema } from './interfaces/jogador/jogador.schema';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://root:s3cr3t@cluster-api-smartrankin.4nb9now.mongodb.net/sradminbackend?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO),
     MongooseModule.forFeature([
       { name: 'Categoria', schema: CategoriasSchema },
       { name: 'Jogador', schema: JogadorSchema },
