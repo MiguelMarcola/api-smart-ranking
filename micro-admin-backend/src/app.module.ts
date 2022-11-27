@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CategoriasSchema } from './interfaces/categorias/categoria.schema';
-import { JogadorSchema } from './interfaces/jogador/jogador.schema';
+import { JogadorSchema } from './modules/jogador/interfaces/jogador.schema';
+import { JogadorModule } from './modules/jogador/jogador.module';
+import { CategoriasModule } from './modules/categorias/categorias.module';
+import { CategoriasSchema } from './modules/categorias/interfaces/categoria.schema';
 
 @Module({
   imports: [
@@ -14,8 +14,10 @@ import { JogadorSchema } from './interfaces/jogador/jogador.schema';
       { name: 'Categoria', schema: CategoriasSchema },
       { name: 'Jogador', schema: JogadorSchema },
     ]),
+    JogadorModule,
+    CategoriasModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

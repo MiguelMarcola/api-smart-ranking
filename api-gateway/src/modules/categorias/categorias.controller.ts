@@ -2,38 +2,27 @@ import {
   Body,
   Controller,
   Get,
-  Put,
-  Param,
   Logger,
+  Param,
+  Post,
+  Put,
   Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  Transport,
-} from '@nestjs/microservices';
-import { Post } from '@nestjs/common';
-import { CreateCategoriaDto } from './modules/categorias/dto/create-categoria.dto';
 import { Observable } from 'rxjs';
-import { UpdateCategoriaDto } from './modules/categorias/dto/update-categoria.dto';
+import { ClientProxySmartRanking } from '../proxyrmq/client-proxy';
+import { CreateCategoriaDto } from './dto/create-categoria.dto';
+import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 
 @Controller('api/v1')
-export class AppController {
-  constructor() {
-    this.clientAdminBackend = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: [process.env.RMQ_URL],
-        queue: 'admin-backend',
-      },
-    });
-  }
+export class CategoriasController {
+  constructor(private clientProxySmartRanking: ClientProxySmartRanking) {}
 
-  private logger = new Logger(AppController.name);
+  private logger = new Logger(CategoriasController.name);
 
-  private clientAdminBackend: ClientProxy;
+  private clientAdminBackend =
+    this.clientProxySmartRanking.getClientProxyAdminBackendInstance();
 
   @Post('categorias')
   @UsePipes(ValidationPipe)
